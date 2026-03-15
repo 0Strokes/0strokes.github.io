@@ -12,7 +12,7 @@ The result: a simple C program that identifies the Linux kernel base address in 
 
 ## Quick Refresher: What Is KASLR?
 
-KASLR (Kernel Address Space Layout Randomization) randomizes where the kernel image gets loaded in memory on each boot. On x86-64 Linux, the kernel text lives somewhere in the range `0xffffffff80000000` – `0xffffffffc0000000`, aligned to 2 MiB boundaries. That gives you roughly 512 possible positions — about 30 bits of entropy.
+KASLR (Kernel Address Space Layout Randomization) randomizes where the kernel image gets loaded in memory on each boot. On x86-64 Linux, the kernel text lives somewhere in the range `0xffffffff80000000` – `0xffffffffc0000000`, aligned to 2 MiB boundaries. That gives you roughly 512 possible positions — about 9 bits of entropy.
 
 The whole point is to prevent attacks that rely on knowing where kernel code lives (ROP, JOP, info-leaks, etc.). If the attacker doesn't know the base address, they can't jump to useful gadgets. Simple concept — but the moment you leak that address, the protection is gone.
 
@@ -216,7 +216,7 @@ This is where it gets tricky, because there's no single default-on fix deployed 
 **Complementary (raises the bar but doesn't fix it):**
 - Restrict `RDTSCP`/`RDTSC` in user space — adds noise but doesn't prevent the attack. Attackers can fall back to `clock_gettime` or other timing sources.
 - Monitor anomalous `CLDEMOTE` usage with eBPF/perf.
-- Increase KASLR entropy beyond 30 bits.
+- Increase KASLR entropy beyond 9 bits.
 
 **Bottom line:** The most practical short-term fix for cloud providers is CPUID filtering at the hypervisor level. For bare-metal with Sapphire Rapids+, writing the `DIS_USER_CLDEMOTE` MSR works but requires manual configuration. A real fix probably needs both — disable the instruction for Ring 3 *and* decouple the trampoline from the kernel base.
 
