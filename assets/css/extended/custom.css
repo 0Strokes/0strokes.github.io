@@ -1,0 +1,588 @@
+/* ============================================================
+   NoMoreWars — Phrack-inspired terminal aesthetic
+   Dark, monospace, minimal. No decorations. No apologies.
+   ============================================================ */
+
+/* --- Design tokens --- */
+:root,
+:root[data-theme="dark"] {
+  --theme:          #0d0d0d;
+  --entry:          #111111;
+  --primary:        #c8c8c8;
+  --secondary:      #525252;
+  --tertiary:       #1a1a1a;
+  --content:        #b0b0b0;
+  --code-block-bg:  #080808;
+  --code-bg:        #141414;
+  --border:         #1e1e1e;
+  --radius:         0px;
+  --accent:         #c8a84b;   /* amber phosphor */
+  color-scheme:     dark;
+}
+
+/* --- Global reset on top of PaperMod --- */
+*,
+*::before,
+*::after {
+  border-radius: 0 !important;
+  box-shadow:    none !important;
+}
+
+body {
+  background:              var(--theme);
+  font-family:             'JetBrains Mono', 'Courier New', Courier, monospace;
+  font-size:               14px;
+  line-height:             1.75;
+  color:                   var(--primary);
+  -webkit-font-smoothing:  antialiased;
+}
+
+/* Everything monospace */
+h1, h2, h3, h4, h5, h6,
+p, li, td, th, dt, dd,
+.post-meta, .entry-footer,
+.entry-content, .breadcrumbs,
+input, button, select, textarea {
+  font-family: 'JetBrains Mono', 'Courier New', Courier, monospace;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--primary);
+}
+
+/* --- Links --- */
+a {
+  color:           var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--primary);
+}
+
+/* Kill the underline box-shadow PaperMod adds on post content links */
+.post-content a {
+  box-shadow: none !important;
+  border-bottom: 1px solid var(--border);
+}
+
+.post-content a:hover {
+  border-bottom-color: var(--accent);
+}
+
+/* --- Header / Nav --- */
+.header {
+  background:    var(--theme);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav {
+  line-height: 52px;
+}
+
+.logo a {
+  font-family:    'JetBrains Mono', monospace;
+  font-weight:    500;
+  font-size:      13px;
+  color:          var(--accent) !important;
+  text-transform: lowercase;
+  letter-spacing: 0.06em;
+}
+
+.logo a:hover {
+  color: var(--primary) !important;
+}
+
+#menu a {
+  font-size:      12px;
+  color:          var(--secondary);
+  text-transform: lowercase;
+  letter-spacing: 0.04em;
+  transition:     color 0.1s;
+}
+
+#menu a:hover {
+  color: var(--accent);
+}
+
+#menu .active {
+  color:         var(--primary) !important;
+  border-bottom: 1px solid var(--border) !important;
+  font-weight:   400;
+}
+
+/* --- Footer --- */
+.footer {
+  border-top:  1px solid var(--border);
+  font-size:   11px;
+  color:       var(--secondary);
+  letter-spacing: 0.03em;
+}
+
+.footer a {
+  color: var(--secondary);
+}
+
+.footer a:hover {
+  color: var(--accent);
+}
+
+/* ============================================================
+   HOME PAGE — header + automatic post list
+   ============================================================ */
+
+.home-wrapper {
+  max-width:   750px;
+  margin:      0 auto;
+  padding:     5rem 1.5rem 4rem;
+}
+
+.home-header {
+  margin-bottom: 4rem;
+}
+
+.home-title {
+  font-size:      clamp(1.8rem, 5vw, 2.6rem);
+  font-weight:    500;
+  color:          var(--primary);
+  letter-spacing: -0.03em;
+  line-height:    1.1;
+  margin-bottom:  1rem;
+}
+
+.home-title::before {
+  content:        '> ';
+  color:          var(--accent);
+  font-size:      0.7em;
+  vertical-align: middle;
+}
+
+.home-desc {
+  font-size:   13px;
+  color:       var(--secondary);
+  margin:      0;
+  line-height: 1.6;
+}
+
+.home-section-label {
+  font-size:      11px;
+  font-weight:    400;
+  color:          var(--secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom:  1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom:  1px solid var(--border);
+}
+
+.home-post-list {
+  list-style: none;
+  margin:     0;
+  padding:    0;
+}
+
+.home-post-item {
+  display:        flex;
+  flex-direction: column;
+  gap:            0.2rem;
+  padding:        0.75rem 0;
+  border-bottom:  1px solid var(--border);
+  transition:     none;
+}
+
+.home-post-item:first-child {
+  border-top: 1px solid var(--border);
+}
+
+.home-post-title {
+  font-size:   14px;
+  font-weight: 400;
+  color:       var(--primary);
+  text-decoration: none;
+  line-height: 1.4;
+}
+
+.home-post-title:hover {
+  color: var(--accent);
+}
+
+.home-post-meta {
+  font-size:   12px;
+  color:       var(--secondary);
+  line-height: 1.4;
+}
+
+.home-no-posts {
+  font-size: 12px;
+  color:     var(--secondary);
+}
+
+/* ============================================================
+   POST LIST (/posts) — file listing style
+   date · title, one line per post
+   ============================================================ */
+
+/* Container: /posts page header */
+.page-header h1 {
+  font-size:      14px;
+  font-weight:    400;
+  color:          var(--secondary);
+  text-transform: lowercase;
+  letter-spacing: 0.04em;
+  margin-bottom:  2rem;
+}
+
+.page-header h1::before {
+  content: '~/posts$ ls -lt\A';
+  white-space: pre;
+  display: block;
+  color: var(--secondary);
+  opacity: 0.4;
+  font-size: 11px;
+  margin-bottom: 0.5rem;
+}
+
+/* Post entry: flat row */
+.post-entry {
+  position:   relative;
+  display:    flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap:        2.5rem;
+  margin:     0;
+  padding:    7px 0;
+  background: transparent;
+  border:     none;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.08s;
+}
+
+.post-entry:first-of-type {
+  border-top: 1px solid var(--border);
+}
+
+.post-entry:hover {
+  background: #131313;
+  padding-left: 6px;
+}
+
+.post-entry:active {
+  transform: none;
+}
+
+/* Date: left column */
+.post-entry .entry-footer {
+  order:      1;
+  flex-shrink: 0;
+  display:    block;
+  color:      var(--secondary);
+  font-size:  12px;
+  min-width:  90px;
+}
+
+/* Hide reading time and author — keep only date.
+   post_meta renders: date · read_time · author
+   We can't easily split them without a template change,
+   so show the whole thing but dim it */
+.post-entry .entry-footer span + span {
+  display: none;   /* hides reading time and author spans */
+}
+
+/* Title: right column */
+.post-entry .entry-header {
+  order:  2;
+  flex:   1;
+  padding: 0;
+  overflow: hidden;
+}
+
+.post-entry .entry-header h2 {
+  font-size:     13px;
+  font-weight:   400;
+  color:         var(--primary);
+  white-space:   nowrap;
+  overflow:      hidden;
+  text-overflow: ellipsis;
+  line-height:   1.4;
+}
+
+.post-entry .entry-header h2:hover {
+  color: var(--accent);
+}
+
+/* Hide summary on post list */
+.post-entry .entry-content {
+  display: none;
+}
+
+/* ============================================================
+   SINGLE POST — clean reading experience
+   ============================================================ */
+
+.post-title {
+  font-size:      clamp(1.4rem, 4vw, 2rem);
+  font-weight:    500;
+  line-height:    1.2;
+  letter-spacing: -0.02em;
+  color:          var(--primary);
+}
+
+.post-meta {
+  font-size:  12px;
+  color:      var(--secondary);
+  margin-top: 0.5rem;
+}
+
+.post-content {
+  color:       var(--content);
+  font-size:   14px;
+  line-height: 1.85;
+}
+
+.post-content h1 { font-size: 1.6rem; margin: 2.5rem 0 1.2rem; }
+.post-content h2 { font-size: 1.3rem; margin: 2rem 0 1rem; }
+.post-content h3 { font-size: 1.1rem; margin: 1.5rem 0 0.8rem; }
+.post-content h4,
+.post-content h5,
+.post-content h6 { font-size: 1rem; margin: 1.2rem 0 0.6rem; }
+
+/* Heading prefix glyphs */
+.post-content h2::before { content: '## '; color: var(--secondary); font-size: 0.75em; }
+.post-content h3::before { content: '### '; color: var(--secondary); font-size: 0.75em; }
+
+.post-content p {
+  margin-bottom: 1.2rem;
+  color:         var(--content);
+}
+
+/* Inline code */
+.post-content code {
+  font-family:   'JetBrains Mono', monospace;
+  font-size:     0.82em;
+  background:    var(--code-bg);
+  color:         var(--accent);
+  padding:       2px 5px;
+  border:        1px solid var(--border);
+}
+
+/* Code blocks — raw terminal output */
+.post-content .highlight,
+div.highlight,
+.highlight {
+  background:    var(--code-block-bg) !important;
+  border:        1px solid var(--border);
+  border-left:   3px solid var(--accent);
+  margin:        1.5rem 0;
+  overflow-x:    auto;
+}
+
+.post-content pre,
+pre {
+  background:  var(--code-block-bg) !important;
+  margin:      0;
+  padding:     16px 20px;
+  overflow-x:  auto;
+}
+
+.post-content pre code,
+pre code {
+  font-family:  'JetBrains Mono', 'Courier New', monospace;
+  font-size:    12.5px;
+  line-height:  1.6;
+  background:   transparent !important;
+  color:        #d0d0d0;
+  padding:      0;
+  border:       none;
+}
+
+/* Line numbers */
+.post-content .highlighttable {
+  width: 100%;
+}
+
+.post-content .highlighttable td.lntd:first-child {
+  width:           40px;
+  user-select:     none;
+  color:           var(--secondary);
+  padding-right:   16px;
+  text-align:      right;
+  border-right:    1px solid var(--border);
+  padding-left:    16px;
+}
+
+/* Copy button */
+.copy-code {
+  font-family:  'JetBrains Mono', monospace;
+  font-size:    10px;
+  background:   var(--tertiary) !important;
+  color:        var(--secondary) !important;
+  border:       1px solid var(--border);
+  padding:      2px 6px;
+  letter-spacing: 0.05em;
+}
+
+/* Blockquote */
+.post-content blockquote {
+  margin:             1.5rem 0;
+  padding:            0 0 0 1.2rem;
+  border-left:        3px solid var(--border);
+  color:              var(--secondary);
+  font-style:         normal;
+}
+
+/* HR */
+.post-content hr {
+  border:     none;
+  border-top: 1px solid var(--border);
+  margin:     2.5rem 0;
+  height:     0;
+  background: none;
+}
+
+/* Tables */
+.post-content table {
+  width:       100%;
+  font-size:   13px;
+  border-collapse: collapse;
+}
+
+.post-content table th {
+  color:         var(--accent);
+  font-weight:   500;
+  border-bottom: 1px solid var(--accent);
+  padding:       6px 12px 6px 0;
+  text-align:    left;
+}
+
+.post-content table td {
+  border-bottom: 1px solid var(--border);
+  padding:       6px 12px 6px 0;
+  color:         var(--content);
+}
+
+/* TOC */
+.toc {
+  background:    var(--code-bg);
+  border:        1px solid var(--border);
+  border-left:   3px solid var(--secondary);
+  padding:       12px 16px;
+  font-size:     12px;
+  margin-bottom: 2rem;
+}
+
+.toc .details {
+  color:       var(--secondary);
+  font-weight: 400;
+}
+
+.toc a {
+  color: var(--secondary);
+}
+
+.toc a:hover {
+  color: var(--accent);
+}
+
+/* Tags */
+.post-tags a {
+  font-size:      11px;
+  color:          var(--secondary);
+  background:     var(--code-bg);
+  border:         1px solid var(--border);
+  padding:        2px 8px;
+  text-transform: lowercase;
+  letter-spacing: 0.04em;
+  line-height:    28px;
+}
+
+.post-tags a:hover {
+  color:        var(--accent);
+  border-color: var(--accent);
+}
+
+/* Post nav (prev/next) */
+.paginav {
+  border:      1px solid var(--border);
+  background:  transparent;
+  font-size:   12px;
+  margin-top:  2rem;
+}
+
+.paginav a:hover {
+  background: var(--code-bg);
+}
+
+.paginav .title {
+  color:          var(--secondary);
+  text-transform: lowercase;
+  font-size:      10px;
+  letter-spacing: 0.06em;
+}
+
+/* ============================================================
+   PAGINATION (post list)
+   ============================================================ */
+
+.pagination a {
+  background:     var(--code-bg);
+  color:          var(--primary);
+  border:         1px solid var(--border);
+  border-radius:  0 !important;
+  font-size:      12px;
+  padding:        0 14px;
+  line-height:    34px;
+}
+
+.pagination a:hover {
+  border-color: var(--accent);
+  color:        var(--accent);
+}
+
+/* ============================================================
+   SOCIAL ICONS
+   ============================================================ */
+
+.social-icons a svg {
+  fill:   var(--secondary);
+  width:  20px;
+  height: 20px;
+}
+
+.social-icons a:hover svg {
+  fill: var(--accent);
+}
+
+/* ============================================================
+   404
+   ============================================================ */
+
+.not-found {
+  font-size: 4rem;
+  color:     var(--secondary);
+}
+
+/* ============================================================
+   MISC CLEANUP
+   ============================================================ */
+
+/* Kill all transitions for snappier feel */
+.post-entry,
+.button,
+.logo a,
+#menu a {
+  transition: none;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar        { width: 4px; height: 4px; }
+::-webkit-scrollbar-track  { background: var(--theme); }
+::-webkit-scrollbar-thumb  { background: var(--border); }
+::-webkit-scrollbar-thumb:hover { background: var(--secondary); }
+
+/* Selection */
+::selection {
+  background: var(--accent);
+  color:      #0d0d0d;
+}
