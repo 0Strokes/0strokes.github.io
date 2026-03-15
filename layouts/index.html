@@ -1,0 +1,30 @@
+{{- define "main" }}
+<div class="home-wrapper">
+  <header class="home-header">
+    <h1 class="home-title">{{ site.Title }}</h1>
+    <p class="home-desc">{{ site.Params.description }}</p>
+  </header>
+
+  <section class="home-posts">
+    <h2 class="home-section-label">Posts</h2>
+    {{- $posts := where site.RegularPages "Type" "in" site.Params.mainSections }}
+    {{- $posts = where $posts "Draft" "!=" true }}
+    {{- $posts = sort $posts "Date" "desc" }}
+    {{- if $posts }}
+    <ul class="home-post-list">
+      {{- range $posts }}
+      <li class="home-post-item">
+        <a class="home-post-title" href="{{ .Permalink }}">{{ .Title }}</a>
+        <span class="home-post-meta">
+          {{- .Date.Format "Jan 02, 2006" }}
+          {{- with .Params.reading_time }} · {{ . }} read{{- else }} · {{ .ReadingTime }} min read{{- end }}
+        </span>
+      </li>
+      {{- end }}
+    </ul>
+    {{- else }}
+    <p class="home-no-posts">No posts yet.</p>
+    {{- end }}
+  </section>
+</div>
+{{- end }}

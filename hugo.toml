@@ -1,0 +1,46 @@
+baseURL = "https://0strokes.github.io/"
+languageCode = "en-us"
+title = "FvckTh3Syst3m"
+theme = "PaperMod"
+paginate = 20
+
+[params]
+  author = "0Strokes"
+  description = "Cloud & offensive security research. Breaking things to understand them."
+  ShowReadingTime = false
+  ShowShareButtons = false
+  ShowPostNavLinks = true
+  ShowCodeCopyButtons = true
+  ShowBreadCrumbs = false
+  defaultTheme = "dark"
+  disableThemeToggle = true
+  disableSpecial1stPost = true
+  hideAuthor = true
+  DateFormat = "2006-01-02"
+  mainSections = ["posts"]
+
+[params.homeInfoParams]
+  Title = "FvckTh3Syst3m"
+  Content = "Cloud & offensive security research. Breaking things to understand them."
+
+[[params.socialIcons]]
+  name = "github"
+  url = "https://github.com/0Strokes"
+
+[markup]
+  [markup.highlight]
+    style = "dracula"
+    lineNos = true
+    lineNumbersInTable = true
+    noClasses = true
+    tabWidth = 4
+
+[menu]
+  [[menu.main]]
+    name = "posts"
+    url = "/posts/"
+    weight = 1
+  [[menu.main]]
+    name = "about"
+    url = "/about/"
+    weight = 2

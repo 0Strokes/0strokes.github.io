@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>FvckTh3Syst3m</title>
+    <link>https://0strokes.github.io/</link>
+    <description>Recent content on FvckTh3Syst3m</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 14 Mar 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://0strokes.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Breaking KASLR with CLDEMOTE: From Paper to PoC</title>
+      <link>https://0strokes.github.io/posts/breaking-kaslr-cldemote/</link>
+      <pubDate>Sat, 14 Mar 2026 00:00:00 +0000</pubDate>
+      <guid>https://0strokes.github.io/posts/breaking-kaslr-cldemote/</guid>
+      <description>&lt;p&gt;I recently came across a paper by Taehun Kim et al. — &lt;em&gt;&amp;ldquo;Demoting Security via Exploitation of Cache Demote Operation in Intel&amp;rsquo;s Latest ISA Extension&amp;rdquo;&lt;/em&gt; (&lt;a href=&#34;https://arxiv.org/abs/2503.10074&#34;&gt;arXiv:2503.10074&lt;/a&gt;) — that caught my attention. They proposed two attack primitives built on Intel&amp;rsquo;s &lt;code&gt;CLDEMOTE&lt;/code&gt; instruction: &lt;strong&gt;Flush+Demote&lt;/strong&gt; (a covert channel) and &lt;strong&gt;Demote+Time&lt;/strong&gt; (a KASLR bypass). The KASLR part was what interested me the most, so I decided to build my own proof of concept and test it on a real cloud environment.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
