@@ -1,12 +1,12 @@
 baseURL = "https://0strokes.github.io/"
 languageCode = "en-us"
-title = "FvckTh3Syst3m"
+title = "Principal of Least Privilege"
 theme = "PaperMod"
 paginate = 20
 
 [params]
   author = "0Strokes"
-  description = "Cloud & offensive security research. Breaking things to understand them."
+  description = "How a Principal Security Engineer sees the world, one system at a time."
   ShowReadingTime = false
   ShowShareButtons = false
   ShowPostNavLinks = true
@@ -20,8 +20,8 @@ paginate = 20
   mainSections = ["posts"]
 
 [params.homeInfoParams]
-  Title = "FvckTh3Syst3m"
-  Content = "Cloud & offensive security research. Breaking things to understand them."
+  Title = "Principal of Least Privilege"
+  Content = "How a Principal Security Engineer sees the world, one system at a time."
 
 [[params.socialIcons]]
   name = "github"
