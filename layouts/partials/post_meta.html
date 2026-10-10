@@ -1,0 +1,12 @@
+{{- $meta := slice }}
+{{- if not .Date.IsZero }}
+{{- $meta = $meta | append (printf "<time datetime='%s'>%s</time>" (.Date.Format "2006-01-02") (.Date.Format (default "2006-01-02" site.Params.DateFormat))) }}
+{{- end }}
+{{- with .Params.reading_time }}
+{{- $meta = $meta | append (printf "<span>%s read</span>" .) }}
+{{- else }}
+{{- if .IsPage }}
+{{- $meta = $meta | append (printf "<span>%d min read</span>" .ReadingTime) }}
+{{- end }}
+{{- end }}
+{{- delimit $meta "<span class=\"meta-sep\">/</span>" | safeHTML -}}

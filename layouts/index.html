@@ -1,12 +1,13 @@
 {{- define "main" }}
 <div class="home-wrapper">
   <header class="home-header">
-    <h1 class="home-title">{{ site.Title }}</h1>
+    <p class="home-kicker"><span class="prompt">$</span> cat ~/notes</p>
+    <h1 class="home-title">{{ replace site.Title "Privilege" "<span class=\"accent\">Privilege</span>" | safeHTML }}</h1>
     <p class="home-desc">{{ site.Params.description }}</p>
   </header>
 
   <section class="home-posts">
-    <h2 class="home-section-label">Posts</h2>
+    <h2 class="home-section-label">Latest writing</h2>
     {{- $posts := where site.RegularPages "Type" "in" site.Params.mainSections }}
     {{- $posts = where $posts "Draft" "!=" true }}
     {{- $posts = sort $posts "Date" "desc" }}
@@ -14,11 +15,14 @@
     <ul class="home-post-list">
       {{- range $posts }}
       <li class="home-post-item">
-        <a class="home-post-title" href="{{ .Permalink }}">{{ .Title }}</a>
-        <span class="home-post-meta">
-          {{- .Date.Format "Jan 02, 2006" }}
-          {{- with .Params.reading_time }} · {{ . }} read{{- else }} · {{ .ReadingTime }} min read{{- end }}
-        </span>
+        <time class="home-post-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
+        <div class="home-post-body">
+          <a class="home-post-title" href="{{ .Permalink }}">{{ .Title }}</a>
+          <p class="home-post-summary">{{ .Params.description | default (.Summary | plainify | htmlUnescape | truncate 180) }}</p>
+          <span class="home-post-meta">
+            {{- with .Params.reading_time }}{{ . }} read{{ else }}{{ .ReadingTime }} min read{{ end -}}
+          </span>
+        </div>
       </li>
       {{- end }}
     </ul>
