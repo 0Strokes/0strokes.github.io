@@ -69,7 +69,7 @@ The model was trained on huge amounts of sentence pairs so that texts with simil
 
 384 dimensions is impossible to picture, so imagine the model only had two. Say one axis loosely tracks "access control vs. injection" and the other "server-side vs. client-side":
 
-```
+```text {class="diagram" linenos=false}
                  client-side
                      ▲
    "reflected XSS  ● │      ● "CSRF on account

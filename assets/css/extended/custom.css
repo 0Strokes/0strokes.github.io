@@ -1140,3 +1140,70 @@ body::before {
 .term__prompt { color: var(--accent); }
 .term__cmd    { color: var(--primary); }
 .term__out    { color: var(--secondary); }
+
+/* --- Code blocks as terminal windows (layouts/_default/_markup/render-codeblock.html) --- */
+.post-content .codewin {
+  margin:        1.75rem 0;
+  border:        1px solid var(--border-strong);
+  border-radius: 8px;
+  background:    var(--code-block-bg);
+  overflow:      hidden;
+}
+
+.codewin__bar {
+  position:      relative;
+  display:       flex;
+  align-items:   center;
+  gap:           12px;
+  height:        32px;
+  padding:       0 12px;
+  background:    var(--tertiary);
+  border-bottom: 1px solid var(--border);
+}
+
+.codewin__lang {
+  font-family:    var(--font-mono);
+  font-size:      11px;
+  letter-spacing: 0.04em;
+  color:          var(--muted);
+  text-transform: lowercase;
+}
+
+/* the window is the frame now; the inner highlight block loses its own */
+.post-content .codewin .highlight {
+  margin:        0;
+  border:        none;
+  border-radius: 0;
+}
+
+/* copy button sits in the title bar (moved there by the footer script), always visible */
+.codewin__bar .copy-code,
+.term__bar .copy-code {
+  display:     block;
+  position:    static;
+  margin-left: auto;
+  line-height: 1.5;
+  opacity:     0.75;
+  transition:  opacity 0.15s ease;
+}
+
+.term__bar .copy-code {
+  position: absolute;
+  right:    12px;
+}
+
+.codewin:hover .copy-code,
+.term:hover .copy-code {
+  opacity: 1;
+}
+
+/* ```text {class="diagram"}: center ASCII diagrams inside their window, scroll if wider than the column */
+.post-content .codewin.diagram .highlight {
+  overflow-x: auto;
+}
+
+.post-content .codewin.diagram .highlight pre {
+  width:        max-content;
+  margin:       0 auto;
+  padding:      1.5rem 1.25rem;
+}

@@ -97,6 +97,10 @@
     document.querySelectorAll('pre > code').forEach((codeblock) => {
         const container = codeblock.parentNode.parentNode;
 
+        // skip the line-number column of table-style blocks, only the code column gets a button
+        const td = codeblock.closest('td');
+        if (td && td === td.parentNode.firstElementChild && td.parentNode.children.length > 1) return;
+
         const copybutton = document.createElement('button');
         copybutton.classList.add('copy-code');
         copybutton.innerHTML = '{{- i18n "code_copy" | default "copy" }}';
@@ -127,7 +131,11 @@
             selection.removeRange(range);
         });
 
-        if (container.classList.contains("highlight")) {
+        const win = codeblock.closest('.codewin, .term');
+        if (win) {
+            // code windows (render-codeblock.html) and terminal shortcode: the button lives in the title bar
+            win.querySelector('.codewin__bar, .term__bar').appendChild(copybutton);
+        } else if (container.classList.contains("highlight")) {
             container.appendChild(copybutton);
         } else if (container.parentNode.firstChild == container) {
             // td containing LineNos

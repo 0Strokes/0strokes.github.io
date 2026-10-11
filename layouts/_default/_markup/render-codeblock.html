@@ -1,0 +1,11 @@
+{{- /* Every fenced code block becomes a small terminal window: dots, language label, copy button (added by the footer script). */ -}}
+{{- $lang := lower .Type -}}
+{{- $label := $lang -}}
+{{- if in (slice "" "text" "plaintext" "txt") $lang }}{{ $label = "" }}{{ end -}}
+<div class="codewin{{ with .Attributes.class }} {{ . }}{{ end }}">
+  <div class="codewin__bar">
+    <span class="term__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+    {{- with $label }}<span class="codewin__lang">{{ . }}</span>{{ end }}
+  </div>
+  {{- (transform.HighlightCodeBlock .).Wrapped -}}
+</div>
