@@ -70,6 +70,18 @@ a:hover {
   color:      var(--theme);
 }
 
+/* --- Film grain: a barely visible noise layer so the black reads as a surface, not a void --- */
+body::before {
+  content:        '';
+  position:       fixed;
+  inset:          0;
+  z-index:        -3;
+  pointer-events: none;
+  opacity:        0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+}
+
 /* --- Header / Nav --- */
 .header {
   position:        sticky;
@@ -291,12 +303,110 @@ a:hover {
   color:       var(--muted);
 }
 
+/* hover: the row lights up over a patch of grid, amber rule on the left */
+.home-post-item::before {
+  content:        '';
+  position:       absolute;
+  inset:          0 -1.25rem;
+  z-index:        -1;
+  border-radius:  var(--radius);
+  background:
+    linear-gradient(var(--accent), var(--accent)) left / 2px 100% no-repeat,
+    linear-gradient(90deg, rgba(227, 179, 65, 0.06), transparent 75%),
+    linear-gradient(var(--border) 1px, transparent 1px) 0 0 / 24px 24px,
+    linear-gradient(90deg, var(--border) 1px, transparent 1px) 0 0 / 24px 24px;
+  -webkit-mask-image: linear-gradient(90deg, #000 0%, rgba(0, 0, 0, 0.5) 45%, transparent 90%);
+          mask-image: linear-gradient(90deg, #000 0%, rgba(0, 0, 0, 0.5) 45%, transparent 90%);
+  opacity:        0;
+  transform:      translateX(-6px);
+  transition:     opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+
+.home-post-item:hover::before {
+  opacity:   1;
+  transform: none;
+}
+
+.home-post-title,
+.home-post-date {
+  transition: color 0.2s ease;
+}
+
+.home-post-arrow {
+  display:     inline-block;
+  margin-left: 0.35em;
+  color:       var(--accent);
+  opacity:     0;
+  transform:   translateX(-6px);
+  transition:  opacity 0.25s ease, transform 0.25s ease;
+}
+
 .home-post-item:hover .home-post-title {
   color: var(--accent);
 }
 
+.home-post-item:hover .home-post-arrow {
+  opacity:   1;
+  transform: none;
+}
+
 .home-post-item:hover .home-post-date {
-  color: var(--secondary);
+  color: var(--accent);
+}
+
+/* 4. staggered entrance: header first, then each post */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.home-kicker,
+.home-title,
+.home-desc,
+.home-section-label,
+.home-post-item {
+  animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.home-kicker        { animation-delay: 0.05s; }
+.home-title         { animation-delay: 0.15s; }
+.home-desc          { animation-delay: 0.28s; }
+.home-section-label { animation-delay: 0.42s; }
+.home-post-item:nth-child(1) { animation-delay: 0.50s; }
+.home-post-item:nth-child(2) { animation-delay: 0.58s; }
+.home-post-item:nth-child(3) { animation-delay: 0.66s; }
+.home-post-item:nth-child(4) { animation-delay: 0.74s; }
+.home-post-item:nth-child(n+5) { animation-delay: 0.82s; }
+
+/* 2. ambient light behind the hero, breathing slowly */
+.main:has(.home-wrapper)::after {
+  content:        '';
+  position:       absolute;
+  left:           50%;
+  top:            -140px;
+  width:          min(900px, 140%);
+  height:         560px;
+  transform:      translateX(-50%);
+  background:     radial-gradient(ellipse 50% 50% at 50% 40%, rgba(227, 179, 65, 0.12), rgba(227, 179, 65, 0.035) 45%, transparent 70%);
+  pointer-events: none;
+  z-index:        -2;
+  animation:      breathe 9s ease-in-out infinite alternate;
+}
+
+@keyframes breathe {
+  from { opacity: 0.65; }
+  to   { opacity: 1; }
+}
+
+@media (max-width: 600px) {
+  .home-post-item::before { inset: 0 -0.75rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-kicker, .home-title, .home-desc, .home-section-label, .home-post-item,
+  .main:has(.home-wrapper)::after { animation: none; }
+  .home-post-item::before, .home-post-arrow { transition: none; }
 }
 
 .home-no-posts {
