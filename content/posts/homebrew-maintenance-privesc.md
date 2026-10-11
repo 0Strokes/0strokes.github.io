@@ -17,7 +17,7 @@ Here's one. A root-privileged maintenance routine ran a Homebrew command on a sc
 
 This is not a bug in Homebrew, in any MDM, or in any EDR product. IRU/Kandji, like Jamf or Mosyle, lets you push arbitrary scripts that run as root on enrolled devices. That's the point of the thing, not a flaw.
 
-The bug is in the custom script that gets pushed. In our case it was a maintenance script deployed to the fleet through the MDM, nothing IRU/Kandji or Homebrew did wrong. These scripts are worth writing up precisely because they arrive through configuration, not code review: nobody opens a PR, nobody runs a linter. They get pasted into a web console, scoped to a Blueprint, and from then on they run as root on every machine, with kernel-level privilege and a fraction of the scrutiny.
+The bug is in the custom script that gets pushed. In one case it was a maintenance script deployed to the fleet through the MDM, nothing IRU/Kandji or Homebrew did wrong. These scripts are worth writing up precisely because they arrive through configuration, not code review: nobody opens a PR, nobody runs a linter. They get pasted into a web console, scoped to a Blueprint, and from then on they run as root on every machine, with kernel-level privilege and a fraction of the scrutiny.
 
 So this is a pattern, with Homebrew and `git` as the concrete example. If you run root-level maintenance on macOS through any mechanism, it's yours to worry about too.
 
@@ -67,7 +67,7 @@ The shim and the `Cellar/git` it execs are both user-owned, by design: Homebrew 
 
 So the script author doesn't even write a vulnerable line. They call `brew update` as root, assume Homebrew drops on its own, and Homebrew's preflight walks root straight into the user-writable `Cellar/git` first. The real work runs as the user; the preflight that ran before it already executed a user-owned binary as root.
 
-No race, either. In our case the call fired roughly once a day, so an attacker gets one attempt per cycle, can plant the payload hours ahead, and walk away. They just need their own `git` sitting where the daemon will look.
+No race, either. In this case the call fired roughly once a day, so an attacker gets one attempt per cycle, can plant the payload hours ahead, and walk away. They just need their own `git` sitting where the daemon will look.
 
 ### Why only some machines
 
