@@ -1,5 +1,6 @@
 {{- define "main" }}
 <div class="home-wrapper">
+  <canvas class="grid-pulses" aria-hidden="true"></canvas>
   <header class="home-header">
     <p class="home-kicker"><span class="prompt">$</span> cat ~/notes</p>
     <h1 class="home-title">{{ replace site.Title "Privilege" "<span class=\"accent\">Privilege</span>" | safeHTML }}</h1>
@@ -31,4 +32,7 @@
     {{- end }}
   </section>
 </div>
+{{- with resources.Get "js/grid-network.js" | minify | fingerprint }}
+<script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" defer></script>
+{{- end }}
 {{- end }}
