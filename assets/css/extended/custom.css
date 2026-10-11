@@ -796,3 +796,68 @@ a:hover {
     color: var(--accent) !important;
   }
 }
+
+/* --- Repo card shortcode --- */
+.post-content a.repo-card {
+  display:         block;
+  margin:          2rem 0;
+  padding:         1.1rem 1.25rem;
+  background:      var(--entry);
+  border:          1px solid var(--border-strong);
+  border-left:     3px solid var(--accent);
+  border-radius:   var(--radius);
+  color:           var(--content);
+  text-decoration: none;
+  transition:      border-color 0.15s ease, background 0.15s ease;
+}
+
+.post-content a.repo-card:hover {
+  background:   var(--tertiary);
+  border-color: var(--accent);
+}
+
+.repo-card__head {
+  display:     flex;
+  align-items: center;
+  gap:         0.5rem;
+  font-family: var(--font-mono);
+  font-size:   15px;
+}
+
+.repo-card__icon  { color: var(--secondary); flex-shrink: 0; }
+.repo-card__owner { color: var(--secondary); }
+.repo-card__name  { color: var(--primary); font-weight: 600; }
+
+.repo-card__desc {
+  display:     block;
+  margin-top:  0.45rem;
+  font-size:   15px;
+  line-height: 1.6;
+  color:       var(--content);
+}
+
+.repo-card__meta {
+  display:     flex;
+  flex-wrap:   wrap;
+  align-items: center;
+  gap:         0.4rem 1.25rem;
+  margin-top:  0.8rem;
+  font-family: var(--font-mono);
+  font-size:   12px;
+  color:       var(--muted);
+}
+
+.repo-card__dot {
+  display:        inline-block;
+  width:          9px;
+  height:         9px;
+  margin-right:   0.4em;
+  border-radius:  50%;
+  background:     #3572a5;
+  vertical-align: -1px;
+}
+
+.repo-card__cta {
+  margin-left: auto;
+  color:       var(--accent);
+}

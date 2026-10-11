@@ -11,7 +11,9 @@ For a triage team, that's the worst combination. Volume goes up, and the cheap h
 
 So we had to adapt the process. Not by letting a model close reports on its own, but by building something that does the part humans are slow at: remembering every report we have ever closed, finding the ones that look like the new one, and drafting a verdict grounded in how *we* handled them. A human still makes the call.
 
-This post explains exactly how it works, with most of the time spent on the part people usually hand-wave: embeddings, vectors, and why "similar" is a math problem. The code is open source: [triagent](https://github.com/0Strokes/triagent).
+This post explains exactly how it works, with most of the time spent on the part people usually hand-wave: embeddings, vectors, and why "similar" is a math problem. The tool is called TRIAGEnt, and the code is open source:
+
+{{< repo repo="0Strokes/triagent" name="TRIAGEnt" desc="LLM-assisted HackerOne triage. Learns from your closed reports, drafts a verdict, and waits for a human." lang="Python" license="MIT" >}}
 
 ---
 
@@ -201,7 +203,7 @@ The costs are asymmetric. Reviewing a false positive by hand costs a few minutes
 
 Here's a run on a made-up report, exactly as it shows up in the terminal:
 
-![triagent classifying a report in dry-run mode](/images/triagent-demo.svg)
+![TRIAGEnt classifying a report in dry-run mode](/images/triagent-demo.svg)
 
 Look at the first bullet: the model caught that `curl -I` only fetches headers, so the "disclosure" never actually showed any disclosed content. That's the kind of detail a tired human misses on report forty of the day, and exactly the kind of thing the tool is good at pointing out.
 
@@ -224,6 +226,10 @@ For the truly repetitive noise there's an opt-in auto-approve mode, deliberately
 - Anything the model labels `valid` is **never** auto-closed, regardless of score.
 - Every auto-close has a cancellable countdown, so you can stop a single close without stopping the run.
 - Every verdict and every action lands in an audit table: what was suggested, what was done, by which mode, and when.
+
+An unattended run looks like this. Everything above the threshold gets closed, everything else is left for a human:
+
+![TRIAGEnt in auto-approve mode](/images/triagent-auto-approve.svg)
 
 ---
 
@@ -266,7 +272,9 @@ The LLM is not the clever part. The clever part is that it never reasons from sc
 
 AI made reports cheaper to write. So make reading them cheaper too, and keep the human on the decision that matters.
 
-If you run a program and want to try it, the code is on GitHub: [triagent](https://github.com/0Strokes/triagent). Start with `--dry-run` and a read-only token.
+If you run a program and want to try it, start with `--dry-run` and a read-only token:
+
+{{< repo repo="0Strokes/triagent" name="TRIAGEnt" desc="LLM-assisted HackerOne triage. Learns from your closed reports, drafts a verdict, and waits for a human." lang="Python" license="MIT" >}}
 
 ---
 
