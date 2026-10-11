@@ -6,7 +6,7 @@ paginate = 20
 
 [params]
   author = "0Strokes"
-  description = "How a Principal Security Engineer sees the world, one system at a time."
+  description = "Notes from a Principal Security Engineer who should be asleep."
   ShowReadingTime = false
   ShowShareButtons = false
   ShowPostNavLinks = true
@@ -21,7 +21,7 @@ paginate = 20
 
 [params.homeInfoParams]
   Title = "Principal of Least Privilege"
-  Content = "How a Principal Security Engineer sees the world, one system at a time."
+  Content = "Notes from a Principal Security Engineer who should be asleep."
 
 [[params.socialIcons]]
   name = "github"
