@@ -1072,9 +1072,71 @@ body::before {
   color:       var(--accent);
 }
 
-/* terminal-style blocks ({class="terminal"} on a fence): wrap long lines instead of scrolling */
-.post-content .highlight.terminal pre,
-.post-content .highlight.terminal pre code {
+/* --- Terminal window shortcode --- */
+.post-content .term {
+  margin:        2.75rem 0 1rem;
+  border:        1px solid var(--border-strong);
+  border-radius: 8px;
+  background:    var(--code-block-bg);
+  overflow:      hidden;
+}
+
+.term__bar {
+  position:      relative;
+  display:       flex;
+  align-items:   center;
+  height:        34px;
+  padding:       0 14px;
+  background:    var(--tertiary);
+  border-bottom: 1px solid var(--border);
+}
+
+.term__dots {
+  display: flex;
+  gap:     7px;
+}
+
+.term__dots i {
+  width:         10px;
+  height:        10px;
+  border-radius: 50%;
+  background:    var(--border-strong);
+}
+
+.term__dots i:first-child {
+  background: var(--accent);
+  opacity:    0.85;
+}
+
+.term__title {
+  position:    absolute;
+  left:        50%;
+  transform:   translateX(-50%);
+  font-family: var(--font-mono);
+  font-size:   12px;
+  color:       var(--muted);
+  white-space: nowrap;
+}
+
+.post-content .term__body {
+  margin:      0;
+  padding:     1.1rem 1.25rem 1.25rem;
+  background:  transparent !important;
+  border:      none;
   white-space: pre-wrap;
   word-break:  break-word;
 }
+
+.post-content .term__body code {
+  display:     block; /* the theme makes pre code a grid, which puts every span on its own row */
+  font-size:   13px;
+  line-height: 1.75;
+  background:  transparent;
+  padding:     0;
+  border:      none;
+  color:       var(--content);
+}
+
+.term__prompt { color: var(--accent); }
+.term__cmd    { color: var(--primary); }
+.term__out    { color: var(--secondary); }

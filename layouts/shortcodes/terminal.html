@@ -1,0 +1,16 @@
+{{- /* Usage: {{< terminal title="user@host: ~" >}} $ cmd \n output {{< /terminal >}}
+       Lines starting with "$ " are commands, everything else is output. */ -}}
+{{- $title := .Get "title" | default "~" -}}
+<figure class="term" role="group" aria-label="terminal">
+  <div class="term__bar"><span class="term__dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="term__title">{{ $title }}</span></div>
+  <pre class="term__body"><code>
+{{- range split (trim .Inner "\n") "\n" -}}
+{{- if hasPrefix . "$ " -}}
+<span class="term__prompt">$</span> <span class="term__cmd">{{ substr . 2 }}</span>
+{{- else -}}
+<span class="term__out">{{ . }}</span>
+{{- end -}}
+{{ "\n" }}
+{{- end -}}
+</code></pre>
+</figure>

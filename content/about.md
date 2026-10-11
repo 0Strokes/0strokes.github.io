@@ -10,15 +10,12 @@ These days I'm a Principal Security Engineer. In practice that means I read the 
 
 This blog is where the notes end up. I write them at 2am because my memory has the retention policy of `/tmp`: everything gets wiped on the next reboot.
 
-```text {linenos=false class="terminal"}
+{{< terminal title="0strokes@insomnia: ~" >}}
 $ whoami
 someone who should be asleep
 
 $ id
 uid=1000(0strokes) gid=1000(insomnia) groups=offense,defense,architecture,meetings
-
-$ uptime
-02:13:37 up longer than I'd like to admit, 1 user, load average: 3 side projects, 2 drafts, 1 coffee
 
 $ sudo sleep 8h
 0strokes is not in the sudoers file. This incident will be reported.
@@ -27,4 +24,4 @@ $ cat ~/.plan
 - write down the quiet bugs
 - drop privileges before running anything
 - go to bed (wontfix)
-```
+{{< /terminal >}}
