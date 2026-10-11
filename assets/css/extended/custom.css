@@ -164,16 +164,16 @@ body::before {
    HOME
    ============================================================ */
 
-.main:has(.home-wrapper) {
+.main {
   position: relative;
 }
 
-/* faint grid that fades out under the hero */
-.main:has(.home-wrapper)::before {
+/* faint grid that fades out under the page header (taller on home) */
+.main::before {
   content:  '';
   position: absolute;
   inset:    0 0 auto 0;
-  height:   520px;
+  height:   var(--grid-height, 340px);
   background-image:
     linear-gradient(var(--border) 1px, transparent 1px),
     linear-gradient(90deg, var(--border) 1px, transparent 1px);
@@ -186,12 +186,16 @@ body::before {
   z-index:  -1;
 }
 
-/* packets travelling along that grid (layouts/index.html), same mask */
+.main:has(.home-wrapper) {
+  --grid-height: 520px;
+}
+
+/* packets travelling along that grid (assets/js/grid-network.js), same mask */
 .grid-pulses {
   position: absolute;
   inset:    0 0 auto 0;
   width:    100%;
-  height:   520px;
+  height:   var(--grid-height, 340px);
   -webkit-mask-image: radial-gradient(ellipse 70% 80% at 50% 0%, #000 0%, transparent 75%);
           mask-image: radial-gradient(ellipse 70% 80% at 50% 0%, #000 0%, transparent 75%);
   pointer-events: none;
@@ -379,14 +383,15 @@ body::before {
 .home-post-item:nth-child(4) { animation-delay: 0.74s; }
 .home-post-item:nth-child(n+5) { animation-delay: 0.82s; }
 
-/* 2. ambient light behind the hero, breathing slowly */
-.main:has(.home-wrapper)::after {
+/* 2. ambient light behind the page header, breathing slowly (softer outside home) */
+.main::after {
   content:        '';
   position:       absolute;
   left:           50%;
   top:            -140px;
   width:          min(900px, 140%);
-  height:         560px;
+  height:         calc(var(--grid-height, 340px) + 40px);
+  opacity:        var(--glow, 0.6);
   transform:      translateX(-50%);
   background:     radial-gradient(ellipse 50% 50% at 50% 40%, rgba(227, 179, 65, 0.12), rgba(227, 179, 65, 0.035) 45%, transparent 70%);
   pointer-events: none;
@@ -394,9 +399,13 @@ body::before {
   animation:      breathe 9s ease-in-out infinite alternate;
 }
 
+.main:has(.home-wrapper)::after {
+  --glow: 1;
+}
+
 @keyframes breathe {
-  from { opacity: 0.65; }
-  to   { opacity: 1; }
+  from { opacity: calc(var(--glow, 0.6) * 0.65); }
+  to   { opacity: var(--glow, 0.6); }
 }
 
 @media (max-width: 600px) {
@@ -405,7 +414,7 @@ body::before {
 
 @media (prefers-reduced-motion: reduce) {
   .home-kicker, .home-title, .home-desc, .home-section-label, .home-post-item,
-  .main:has(.home-wrapper)::after { animation: none; }
+  .main::after { animation: none; }
   .home-post-item::before, .home-post-arrow { transition: none; }
 }
 
@@ -490,8 +499,87 @@ body::before {
   color:       var(--secondary);
 }
 
+/* same hover as the home list */
+.post-entry::before {
+  content:        '';
+  position:       absolute;
+  inset:          0 -1.25rem;
+  z-index:        -1;
+  border-radius:  var(--radius);
+  background:
+    linear-gradient(var(--accent), var(--accent)) left / 2px 100% no-repeat,
+    linear-gradient(90deg, rgba(227, 179, 65, 0.06), transparent 75%),
+    linear-gradient(var(--border) 1px, transparent 1px) 0 0 / 24px 24px,
+    linear-gradient(90deg, var(--border) 1px, transparent 1px) 0 0 / 24px 24px;
+  -webkit-mask-image: linear-gradient(90deg, #000 0%, rgba(0, 0, 0, 0.5) 45%, transparent 90%);
+          mask-image: linear-gradient(90deg, #000 0%, rgba(0, 0, 0, 0.5) 45%, transparent 90%);
+  opacity:        0;
+  transform:      translateX(-6px);
+  transition:     opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+
+.post-entry:hover::before {
+  opacity:   1;
+  transform: none;
+}
+
+.post-entry .entry-header h2,
+.post-entry .entry-footer {
+  transition: color 0.2s ease;
+}
+
+/* the theme lays the title out as flex (space-between); keep the arrow next to the text */
+.post-entry .entry-header h2 {
+  display: block;
+}
+
+.post-entry .entry-header h2::after {
+  content:     '→';
+  display:     inline-block;
+  margin-left: 0.35em;
+  color:       var(--accent);
+  opacity:     0;
+  transform:   translateX(-6px);
+  transition:  opacity 0.25s ease, transform 0.25s ease;
+}
+
 .post-entry:hover .entry-header h2 {
   color: var(--accent);
+}
+
+.post-entry:hover .entry-header h2::after {
+  opacity:   1;
+  transform: none;
+}
+
+.post-entry:hover .entry-footer {
+  color: var(--accent);
+}
+
+.page-header,
+.post-entry {
+  animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.page-header                 { animation-delay: 0.05s; }
+.post-entry:nth-of-type(1)   { animation-delay: 0.20s; }
+.post-entry:nth-of-type(2)   { animation-delay: 0.28s; }
+.post-entry:nth-of-type(3)   { animation-delay: 0.36s; }
+.post-entry:nth-of-type(4)   { animation-delay: 0.44s; }
+.post-entry:nth-of-type(n+5) { animation-delay: 0.52s; }
+
+/* single post: header settles in, then the body */
+.post-header  { animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) 0.05s both; }
+.post-content { animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) 0.2s both; }
+
+@media (max-width: 600px) {
+  .post-entry::before { inset: 0 -0.75rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-header, .post-entry, .post-header, .post-content { animation: none; }
+  .post-entry::before, .post-entry .entry-header h2::after { transition: none; }
 }
 
 /* ============================================================

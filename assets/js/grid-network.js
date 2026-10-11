@@ -10,8 +10,16 @@
 (function () {
   'use strict';
 
-  var canvas = document.querySelector('.grid-pulses');
-  if (!canvas || !canvas.getContext) return;
+  var main = document.querySelector('.main');
+  if (!main) return;
+  var canvas = document.createElement('canvas');
+  if (!canvas.getContext) return;
+  canvas.className = 'grid-pulses';
+  canvas.setAttribute('aria-hidden', 'true');
+  main.insertBefore(canvas, main.firstChild);
+
+  // calmer everywhere except the home page, so it never competes with reading
+  var calm = !document.querySelector('.home-wrapper');
 
   var ctx = canvas.getContext('2d');
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -46,7 +54,7 @@
     x0 = (((W - CELL) / 2) % CELL + CELL) % CELL;
     cols = Math.floor((W - x0) / CELL);
     rows = Math.floor(H / CELL);
-    maxPackets = W < 640 ? 2 : 4;
+    maxPackets = calm ? (W < 640 ? 1 : 2) : (W < 640 ? 2 : 4);
 
     // pick hosts among the clearly visible intersections, spread out a bit
     var candidates = [];
@@ -57,7 +65,7 @@
       }
     }
     candidates.sort(function () { return Math.random() - 0.5; });
-    var want = Math.max(5, Math.min(W < 640 ? 7 : 14, Math.round(candidates.length / 6)));
+    var want = Math.max(calm ? 4 : 5, Math.min(W < 640 ? 7 : (calm ? 9 : 14), Math.round(candidates.length / 6)));
     nodes = [];
     for (var i = 0; i < candidates.length && nodes.length < want; i++) {
       var c = candidates[i];
@@ -112,7 +120,7 @@
   function update(dt, now) {
     if (now > nextSpawn && packets.length < maxPackets && now > bootAt + 900) {
       spawn();
-      nextSpawn = now + rand(700, 2000);
+      nextSpawn = now + (calm ? rand(1600, 3600) : rand(700, 2000));
     }
 
     packets.forEach(function (p) {
